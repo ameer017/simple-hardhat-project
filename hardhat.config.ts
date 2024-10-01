@@ -1,6 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import { vars } from "hardhat/config";
+import { vars } from "hardhat/config"; //  npx hardhat vars set 
 require("dotenv").config();
 
 const ALCHEMY_API_KEY = vars.get("ALCHEMY_API_KEY")
