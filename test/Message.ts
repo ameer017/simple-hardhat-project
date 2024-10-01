@@ -7,12 +7,11 @@ describe("Message Test", function () {
     async function deployMessageFixture() {
         // Contracts are deployed using the first signer/account by default
         const [owner, otherAccount] = await hre.ethers.getSigners();
-        const zeroAddress = await hre.ethers.ZeroAddress;
 
         const Message = await hre.ethers.getContractFactory("Message");
         const message = await Message.deploy();
 
-        return { message, owner, otherAccount, zeroAddress };
+        return { message, owner, otherAccount };
     }
 
 
@@ -35,20 +34,23 @@ describe("Message Test", function () {
             const { message, otherAccount } = await loadFixture(deployMessageFixture);
             const msg = "Hello World 🌍 "
 
+            const zeroAddress = await hre.ethers.ZeroAddress;
+
             await expect(
                 message.connect(otherAccount).setMessage(msg)
             ).to.be.revertedWith("You are not the owner");
+            
 
         });
 
         it("should be able to transfer ownership", async function () {
-            const { message, owner, otherAccount } = await loadFixture(deployMessageFixture);
+            const { message, otherAccount } = await loadFixture(deployMessageFixture);
 
             await message.transferOwnership(otherAccount.address)
 
             expect(await message.owner()).to.equal(otherAccount.address);
 
         })
-       
+
     })
 })
